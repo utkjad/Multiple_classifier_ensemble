@@ -50,7 +50,8 @@ public class CensusProject {
         Instances tempBalancedData = objPreprocess.BalanceDataSMOTE(tempReplaceMissingValues);
         Instances tempBalancedRandomizedData = objPreprocess.AfterSmoteDataRandomize(tempBalancedData);
        // Instances normalizedTrainData = objPreprocess.NormalizedData(tempBalancedRandomizedData);
-        Instances normalizedTestData = objPreprocess.cleanTest(test);
+        Instances testFilledMissingValues = objPreprocess.replaceMissingValues(test);
+        //Instances normalizedTestData = objPreprocess.cleanTest(testFilledMissingValues);
         MajorityVote mV = new MajorityVote();
         mV.MajorityVotePrediction(train, test);
         NaiveBayes nB = new NaiveBayes();
