@@ -6,17 +6,21 @@
 package preprocessing;
 
 import java.io.BufferedReader;
+
+import java.io.File;
 import java.io.FileReader;
+
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.filters.unsupervised.attribute.ReplaceMissingValues;
 import weka.core.converters.ArffSaver;
+import weka.core.converters.CSVLoader;
 import weka.filters.SimpleFilter;
 import weka.filters.supervised.instance.SMOTE;
 import weka.filters.unsupervised.instance.Randomize;
 import weka.filters.unsupervised.attribute.Normalize;
 
-
+import weka.core.converters.CSVLoader.*;
 /**
  *
  * @author Monisha
@@ -30,6 +34,13 @@ public class Preprocessing{
         
         br.close();
 }
+    public static void readCsvFile() throws Exception{
+    	CSVLoader loader = new CSVLoader();
+    	loader.setSource(new File("census-income-data.csv"));
+    	Instances data = loader.getDataSet();
+    	loader.setSource(new File("census-income-test.csv"));
+    	Instances test = loader.getDataSet();
+    }
     public static Instances replaceMissingValues(Instances train) throws Exception{
         ReplaceMissingValues rmv = new ReplaceMissingValues();
         rmv.setInputFormat(train);

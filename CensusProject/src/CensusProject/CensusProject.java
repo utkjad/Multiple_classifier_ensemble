@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.util.Random;
 
 import preprocessing.*;
+import Ensemble.*;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Instances;
@@ -50,14 +51,15 @@ public class CensusProject {
         Instances tempBalancedRandomizedData = objPreprocess.AfterSmoteDataRandomize(tempBalancedData);
        // Instances normalizedTrainData = objPreprocess.NormalizedData(tempBalancedRandomizedData);
         Instances normalizedTestData = objPreprocess.cleanTest(test);
-        
+        MajorityVote mV = new MajorityVote();
+        mV.MajorityVotePrediction(train, test);
         NaiveBayes nB = new NaiveBayes();
         nB.buildClassifier(tempBalancedRandomizedData);
-        Evaluation eval = new Evaluation(tempBalancedRandomizedData);
-        eval.evaluateModel(nB, normalizedTestData);
+       // Evaluation eval = new Evaluation(tempBalancedRandomizedData);
+        //eval.evaluateModel(nB, normalizedTestData);
         
-        System.out.println(eval.toSummaryString("\nResults\n===============\n", true));
-        System.out.println(eval.fMeasure(1)+" "+eval.precision(1)+" "+ eval.recall(1));
+       // System.out.println(eval.toSummaryString("\nResults\n===============\n", true));
+        //System.out.println(eval.fMeasure(1)+" "+eval.precision(1)+" "+ eval.recall(1));
     }
     
 }
