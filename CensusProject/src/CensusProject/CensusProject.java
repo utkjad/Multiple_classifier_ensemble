@@ -18,7 +18,7 @@ import weka.filters.supervised.instance.SMOTE;
 
 /**
  *
- * @author Monisha
+ * @author Monisha, Smitha, Utkarsh
  */
 public class CensusProject {
 
@@ -27,38 +27,51 @@ public class CensusProject {
 	 *            the command line arguments
 	 */
 	public static void main(String[] args) throws Exception {
-		// TODO code application logic here
-		// BufferedReader br = new BufferedReader(new
-		// FileReader("census-income-data.arff"));
 
-		// Instances train = new Instances(br);
-		// train.setClassIndex(train.numAttributes()-1);
+		/* Conversion of Given Files to Arff files */
+		String dataArfffile = "census-income-data.arff";
+		String testArfffile = "census-income-test.arff";
 
-		// br.close();
+		ConversionToArff objConversionToArff = new ConversionToArff();
+		objConversionToArff.convertToArffFile("census-income.data", dataArfffile);
+		objConversionToArff.convertToArffFile("census-income.test", testArfffile);
+
+		/* Now Read the Arff files to Instances */
 		Preprocessing objPreprocess = new Preprocessing();
-		BufferedReader br = new BufferedReader(new FileReader("census-income-data.arff"));
-		Instances train = new Instances(br);
-		train.setClassIndex(train.numAttributes() - 1);
+		/*
+		 * BufferedReader brDataFile = new BufferedReader(new
+		 * FileReader(dataArfffile)); Instances train = new
+		 * Instances(brDataFile); train.setClassIndex(train.numAttributes() -
+		 * 1);
+		 * 
+		 * brDataFile.close();
+		 * 
+		 * BufferedReader brTestFile = new BufferedReader(new
+		 * FileReader(testArfffile)); Instances test = new
+		 * Instances(brTestFile); test.setClassIndex(test.numAttributes() - 1);
+		 * 
+		 * brTestFile.close()
+		 ;*/
 
-		br.close();
+		Instances train = objPreprocess.readArffFile(dataArfffile);
+		Instances test = objPreprocess.readArffFile(testArfffile);
 
-		BufferedReader br1 = new BufferedReader(new FileReader("census-income-test.arff"));
-		Instances test = new Instances(br1);
-		test.setClassIndex(test.numAttributes() - 1);
+		if (train != null && test != null) {
+			/* Preprocessing */
 
-		br1.close();
+			Instances tempReplaceMissingValues = objPreprocess.replaceMissingValues(train);
+			Instances tempBalancedData = objPreprocess.BalanceDataSMOTE(tempReplaceMissingValues);
+			Instances tempBalancedRandomizedData = objPreprocess.AfterSmoteDataRandomize(tempBalancedData);
+			// Instances normalizedTrainData =
+			// objPreprocess.NormalizedData(tempBalancedRandomizedData);
+			Instances testFilledMissingValues = objPreprocess.replaceMissingValues(test);
+			// Instances normalizedTestData =
+			// objPreprocess.cleanTest(testFilledMissingValues);
 
-		Instances tempReplaceMissingValues = objPreprocess.replaceMissingValues(train);
-		Instances tempBalancedData = objPreprocess.BalanceDataSMOTE(tempReplaceMissingValues);
-		Instances tempBalancedRandomizedData = objPreprocess.AfterSmoteDataRandomize(tempBalancedData);
-		// Instances normalizedTrainData =
-		// objPreprocess.NormalizedData(tempBalancedRandomizedData);
-		Instances testFilledMissingValues = objPreprocess.replaceMissingValues(test);
-		// Instances normalizedTestData =
-		// objPreprocess.cleanTest(testFilledMissingValues);
-		MajorityVote mV = new MajorityVote();
-		mV.MajorityVotePrediction(train, test);
-
+			/* Use Majority Vote for Prediction */
+			MajorityVote mV = new MajorityVote();
+			mV.MajorityVotePrediction(train, test);
+		}
 	}
 
 }

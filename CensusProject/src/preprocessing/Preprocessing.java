@@ -6,9 +6,10 @@
 package preprocessing;
 
 import java.io.BufferedReader;
-
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 
 import weka.core.Instance;
 import weka.core.Instances;
@@ -19,29 +20,32 @@ import weka.filters.SimpleFilter;
 import weka.filters.supervised.instance.SMOTE;
 import weka.filters.unsupervised.instance.Randomize;
 import weka.filters.unsupervised.attribute.Normalize;
-
 import weka.core.converters.CSVLoader.*;
 
 /**
  *
- * @author Monisha
+ * @author Monisha, Smitha, Utkarsh
  */
 public class Preprocessing {
 
-	public static void readArffFile() throws Exception {
-		BufferedReader br = new BufferedReader(new FileReader("census-income-data.arff"));
-		Instances train = new Instances(br);
-		train.setClassIndex(train.numAttributes() - 1);
-
-		br.close();
-	}
-
-	public static void readCsvFile() throws Exception {
-		CSVLoader loader = new CSVLoader();
-		loader.setSource(new File("census-income-data.csv"));
-		Instances data = loader.getDataSet();
-		loader.setSource(new File("census-income-test.csv"));
-		Instances test = loader.getDataSet();
+	/*Function to Read the Arff file to Instances*/
+	public static Instances readArffFile(String filename) {
+		BufferedReader br = null;
+		Instances readInstances = null;
+		try {
+			br = new BufferedReader(new FileReader(filename));
+			readInstances = new Instances(br);
+			readInstances.setClassIndex(readInstances.numAttributes() - 1);			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if (br != null) br.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return readInstances;
 	}
 
 	public static Instances replaceMissingValues(Instances train) throws Exception {

@@ -41,19 +41,30 @@ public class MajorityVote {
 		Classifier[] objClassifiers = { objNBTree, objJ48, objLogistic, objRandomForest, objASCREPTree };
 
 		objVote.setClassifiers(objClassifiers);
+		
+		
+		long starttime = System.currentTimeMillis();
 		objVote.buildClassifier(train);
-
+		long stoptime = System.currentTimeMillis();
+		long elapsedtime = stoptime - starttime;
+		
 		Evaluation eval = new Evaluation(test);
 		eval.evaluateModel(objVote, test);
-
+        
+        
 		/*Writing Output*/
 		System.out.println("=== Classifier model (full training set) ===");
 		System.out.println();
 		System.out.println(objVote);
 		
+		System.out.println("=== Time taken to Build Classifiers ===");
+		System.out.println();
+		System.out.println(elapsedtime);
+		
 		System.out.println(eval.toSummaryString("\nResults\n===============\n", true));
 		
-		System.out.println("F-Measure" + eval.fMeasure(1) + "Precision " + eval.precision(1) + "Recall " + eval.recall(1));
+		System.out.println("For <50K " + "F-Measure :" + eval.fMeasure(0) + " Precision :" + eval.precision(0) + " Recall :" + eval.recall(0));
+		System.out.println("For >50K " + "F-Measure :" + eval.fMeasure(1) + " Precision :" + eval.precision(1) + " Recall :" + eval.recall(1));
 
 		
 		/*To print the confusion Matrix*/
