@@ -1,5 +1,7 @@
 package Ensemble;
 
+import java.util.concurrent.TimeUnit;
+
 import weka.attributeSelection.CfsSubsetEval;
 import weka.attributeSelection.GreedyStepwise;
 import weka.core.Instances;
@@ -45,21 +47,22 @@ public class MajorityVote {
 		
 		long starttime = System.currentTimeMillis();
 		objVote.buildClassifier(train);
-		long stoptime = System.currentTimeMillis();
-		long elapsedtime = stoptime - starttime;
 		
 		Evaluation eval = new Evaluation(test);
 		eval.evaluateModel(objVote, test);
         
+		long stoptime = System.currentTimeMillis();
+		long elapsedtime = stoptime - starttime;
+		long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(elapsedtime);
         
 		/*Writing Output*/
 		System.out.println("=== Classifier model (full training set) ===");
 		System.out.println();
 		System.out.println(objVote);
 		
-		System.out.println("=== Time taken to Build Classifiers ===");
+		System.out.println("=== Time taken to Build Classifiers & Test ===");
 		System.out.println();
-		System.out.println(elapsedtime);
+		System.out.println(timeSeconds + " seconds");
 		
 		System.out.println(eval.toSummaryString("\nResults\n===============\n", true));
 		
