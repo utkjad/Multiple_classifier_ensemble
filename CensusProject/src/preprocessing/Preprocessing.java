@@ -19,6 +19,7 @@ import weka.core.converters.CSVLoader;
 import weka.filters.SimpleFilter;
 import weka.filters.supervised.instance.SMOTE;
 import weka.filters.unsupervised.instance.Randomize;
+import weka.filters.unsupervised.instance.RemoveWithValues;
 import weka.filters.unsupervised.attribute.Normalize;
 import weka.core.converters.CSVLoader.*;
 
@@ -28,19 +29,20 @@ import weka.core.converters.CSVLoader.*;
  */
 public class Preprocessing {
 
-	/*Function to Read the Arff file to Instances*/
-	public static Instances readArffFile(String filename) {
+	/* Function to Read the Arff file to Instances */
+	public Instances readArffFile(String filename) {
 		BufferedReader br = null;
 		Instances readInstances = null;
 		try {
 			br = new BufferedReader(new FileReader(filename));
 			readInstances = new Instances(br);
-			readInstances.setClassIndex(readInstances.numAttributes() - 1);			
+			readInstances.setClassIndex(readInstances.numAttributes() - 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
 			try {
-				if (br != null) br.close();
+				if (br != null)
+					br.close();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -48,7 +50,7 @@ public class Preprocessing {
 		return readInstances;
 	}
 
-	public static Instances replaceMissingValues(Instances train) throws Exception {
+	public Instances replaceMissingValues(Instances train) throws Exception {
 		ReplaceMissingValues rmv = new ReplaceMissingValues();
 		rmv.setInputFormat(train);
 		for (int n = 0; n < train.numInstances(); n++) {
@@ -63,11 +65,11 @@ public class Preprocessing {
 		return newData;
 	}
 
-	public static Instances BalanceDataSMOTE(Instances newData) throws Exception {
+	public Instances BalanceDataSMOTE(Instances newData, double percentage, int kValue) throws Exception {
 		SMOTE objSmote = new SMOTE();
 		objSmote.setInputFormat(newData);
-		objSmote.setPercentage(100.0);
-		objSmote.setNearestNeighbors(5);
+		objSmote.setPercentage(percentage);
+		objSmote.setNearestNeighbors(kValue);
 		objSmote.setClassValue("0");
 		objSmote.setRandomSeed(1);
 		for (int n = 0; n < newData.numInstances(); n++) {
@@ -82,7 +84,7 @@ public class Preprocessing {
 		return newData1;
 	}
 
-	public static Instances AfterSmoteDataRandomize(Instances train) throws Exception {
+	public Instances AfterSmoteDataRandomize(Instances train) throws Exception {
 		Randomize objRandom = new Randomize();
 		objRandom.setRandomSeed(42);
 		objRandom.setInputFormat(train);
@@ -98,7 +100,7 @@ public class Preprocessing {
 		return newData1;
 	}
 
-	public static Instances NormalizedData(Instances data) throws Exception {
+	public Instances NormalizedData(Instances data) throws Exception {
 		Normalize objNormalize = new Normalize();
 		objNormalize.setInputFormat(data);
 		for (int n = 0; n < data.numInstances(); n++) {
@@ -113,11 +115,25 @@ public class Preprocessing {
 		return newData1;
 	}
 
-	public static Instances cleanTest(Instances test) throws Exception {
+	public Instances cleanTest(Instances test) throws Exception {
 		Instances tempReplaceMissingValuesTest = replaceMissingValues(test);
 		// Instances normalizedTestData =
 		// NormalizedData(tempReplaceMissingValuesTest);
 		// return normalizedTestData;
 		return tempReplaceMissingValuesTest;
+	}
+
+	public Instances removeMissingInstances(Instances data) {
+		/*boolean	hasMissingValue()
+		Tests whether an instance has a missing value.*/
+
+		Instances newData = new Instances(data, data.numInstances());
+		for (int n = 0; n < data.numInstances(); n++) {
+			Instance tempInstance = data.instance(n);
+			if(!tempInstance.hasMissingValue()){
+				newData.add(tempInstance);
+			}			
+		}
+		return newData;
 	}
 }

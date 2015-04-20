@@ -19,7 +19,7 @@ import weka.core.SelectedTag;
 
 public class MajorityVote {
 
-	public static void MajorityVotePrediction(Instances train, Instances test) throws Exception {
+	public void MajorityVotePrediction(Instances train, Instances test) throws Exception {
 
 		Vote objVote = new Vote();
 		SelectedTag objTag = new SelectedTag(Vote.MAJORITY_VOTING_RULE, Vote.TAGS_RULES);
@@ -56,6 +56,10 @@ public class MajorityVote {
 		long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(elapsedtime);
         
 		/*Writing Output*/
+		System.out.println("=== Number of Training Instances ===");
+		System.out.println(train.numInstances());
+		System.out.println();
+		
 		System.out.println("=== Classifier model (full training set) ===");
 		System.out.println();
 		System.out.println(objVote);
