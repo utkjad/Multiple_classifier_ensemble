@@ -57,7 +57,7 @@ public class CensusProject {
 				/* Replace Missing Values in Data */
 				Instances trainReplaceMissingValues = objPreprocess.replaceMissingValues(train);
 				/* Balance The Data using SMOTE */
-				Instances trainBalancedData = objPreprocess.BalanceDataSMOTE(trainReplaceMissingValues,60, 5);
+				Instances trainBalancedData = objPreprocess.BalanceDataSMOTE(trainReplaceMissingValues,65, 5);
 				/* Randomize the Data after using SMOTE */
 				Instances trainBalancedRandomizedData = objPreprocess.AfterSmoteDataRandomize(trainBalancedData);
 				/* Replace Missing Values in Test */
@@ -69,7 +69,7 @@ public class CensusProject {
 				/* Replace Missing Values in Train */
 				Instances trainReplaceMissingValues = objPreprocess.replaceMissingValues(train);
 				/* Balance The Data using SMOTE */
-				Instances trainBalancedData = objPreprocess.BalanceDataSMOTE(trainReplaceMissingValues, 60, 5);
+				Instances trainBalancedData = objPreprocess.BalanceDataSMOTE(trainReplaceMissingValues, 65, 5);
 				/* Randomize the Data after using SMOTE */
 				Instances trainBalancedRandomizedData = objPreprocess.AfterSmoteDataRandomize(trainBalancedData);
 				/* Normalize the Train Data */
