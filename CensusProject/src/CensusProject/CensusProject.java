@@ -1,20 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+This class implements the main method where we 
+run the Majority Voting algorithm using preprocessing.
  */
 package CensusProject;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.Random;
-
 import preprocessing.*;
 import Ensemble.*;
-import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Instances;
-import weka.filters.supervised.instance.SMOTE;
+
 
 /**
  *
@@ -38,26 +31,11 @@ public class CensusProject {
 
 		/* Now Read the Arff files to Instances */
 		Preprocessing objPreprocess = new Preprocessing();
-		/*
-		 * BufferedReader brDataFile = new BufferedReader(new
-		 * FileReader(dataArfffile)); Instances train = new
-		 * Instances(brDataFile); train.setClassIndex(train.numAttributes() -
-		 * 1);
-		 * 
-		 * brDataFile.close();
-		 * 
-		 * BufferedReader brTestFile = new BufferedReader(new
-		 * FileReader(testArfffile)); Instances test = new
-		 * Instances(brTestFile); test.setClassIndex(test.numAttributes() - 1);
-		 * 
-		 * brTestFile.close() ;
-		 */
 
 		Instances train = objPreprocess.readArffFile(dataArfffile);
 		Instances test = objPreprocess.readArffFile(testArfffile);
 
-		//String selection = "removeMissingValuesRunMAJ";
-		String selection = " ";
+		String selection = "replaceMissingValuesRunMAJ"; /*The one we are using*/
 
 		if (train != null && test != null) {
 
@@ -79,8 +57,8 @@ public class CensusProject {
 				/* Replace Missing Values in Data */
 				Instances trainReplaceMissingValues = objPreprocess.replaceMissingValues(train);
 				/* Balance The Data using SMOTE */
-				Instances trainBalancedData = objPreprocess.BalanceDataSMOTE(trainReplaceMissingValues, 130, 5);
-				/* Randomise the Data after using SMOTE */
+				Instances trainBalancedData = objPreprocess.BalanceDataSMOTE(trainReplaceMissingValues,60, 5);
+				/* Randomize the Data after using SMOTE */
 				Instances trainBalancedRandomizedData = objPreprocess.AfterSmoteDataRandomize(trainBalancedData);
 				/* Replace Missing Values in Test */
 				Instances testFilledMissingValues = objPreprocess.replaceMissingValues(test);
@@ -91,7 +69,7 @@ public class CensusProject {
 				/* Replace Missing Values in Train */
 				Instances trainReplaceMissingValues = objPreprocess.replaceMissingValues(train);
 				/* Balance The Data using SMOTE */
-				Instances trainBalancedData = objPreprocess.BalanceDataSMOTE(trainReplaceMissingValues, 130, 5);
+				Instances trainBalancedData = objPreprocess.BalanceDataSMOTE(trainReplaceMissingValues, 60, 5);
 				/* Randomize the Data after using SMOTE */
 				Instances trainBalancedRandomizedData = objPreprocess.AfterSmoteDataRandomize(trainBalancedData);
 				/* Normalize the Train Data */
@@ -99,7 +77,7 @@ public class CensusProject {
 				/* Replace Missing Values in Test */
 				Instances testFilledMissingValues = objPreprocess.replaceMissingValues(test);
 				/* Normalize the Test Data */
-				Instances normalizedTestData = objPreprocess.cleanTest(testFilledMissingValues);
+				Instances normalizedTestData = objPreprocess.NormalizedData(testFilledMissingValues);
 				/* Running Majority Voting */
 				mV.MajorityVotePrediction(normalizedTrainData, normalizedTestData);
 			} else if (selection.equals("removeMissingValuesRunMAJ")) {

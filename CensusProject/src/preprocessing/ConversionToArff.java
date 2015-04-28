@@ -1,3 +1,7 @@
+/*
+This class is used for conversion of given files to Arff files.
+*/
+
 package preprocessing;
 
 import java.io.BufferedReader;

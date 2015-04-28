@@ -1,27 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+This class is used for Preprocessing given data(both train & test).
+It includes methods for Replace missing values with mean & mode,
+Using SMOTE, Removing missing values, reading ARFF file etc
  */
 package preprocessing;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
-
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.filters.unsupervised.attribute.ReplaceMissingValues;
-import weka.core.converters.ArffSaver;
-import weka.core.converters.CSVLoader;
-import weka.filters.SimpleFilter;
 import weka.filters.supervised.instance.SMOTE;
 import weka.filters.unsupervised.instance.Randomize;
-import weka.filters.unsupervised.instance.RemoveWithValues;
 import weka.filters.unsupervised.attribute.Normalize;
-import weka.core.converters.CSVLoader.*;
+
 
 /**
  *
@@ -50,14 +42,16 @@ public class Preprocessing {
 		return readInstances;
 	}
 
-	public Instances replaceMissingValues(Instances train) throws Exception {
+	/*Replaces missing values using mean and mode imputation method for given Instances
+	 *Returns the new Instances mean and mode values replaced for missing value instance*/
+	public Instances replaceMissingValues(Instances data) throws Exception {
 		ReplaceMissingValues rmv = new ReplaceMissingValues();
-		rmv.setInputFormat(train);
-		for (int n = 0; n < train.numInstances(); n++) {
-			rmv.input(train.instance(n));
+		rmv.setInputFormat(data);
+		for (int n = 0; n < data.numInstances(); n++) {
+			rmv.input(data.instance(n));
 		}
 		rmv.batchFinished();
-		Instances newData = new Instances(train, train.numInstances());
+		Instances newData = new Instances(data, data.numInstances());
 		Instance processed;
 		while ((processed = rmv.output()) != null) {
 			newData.add(processed);
@@ -65,6 +59,8 @@ public class Preprocessing {
 		return newData;
 	}
 
+	/*Use SMOTE with given percentage and kValue
+	 *Returns the new set of Instances after applying SMOTE*/
 	public Instances BalanceDataSMOTE(Instances newData, double percentage, int kValue) throws Exception {
 		SMOTE objSmote = new SMOTE();
 		objSmote.setInputFormat(newData);
@@ -84,15 +80,17 @@ public class Preprocessing {
 		return newData1;
 	}
 
-	public Instances AfterSmoteDataRandomize(Instances train) throws Exception {
+	/*Function Randomizes the given Instances. Done after SMOTE
+	 *Returns the randomized Instances*/
+	public Instances AfterSmoteDataRandomize(Instances data) throws Exception {
 		Randomize objRandom = new Randomize();
 		objRandom.setRandomSeed(42);
-		objRandom.setInputFormat(train);
-		for (int n = 0; n < train.numInstances(); n++) {
-			objRandom.input(train.instance(n));
+		objRandom.setInputFormat(data);
+		for (int n = 0; n < data.numInstances(); n++) {
+			objRandom.input(data.instance(n));
 		}
 		objRandom.batchFinished();
-		Instances newData1 = new Instances(train, train.numInstances());
+		Instances newData1 = new Instances(data, data.numInstances());
 		Instance processed;
 		while ((processed = objRandom.output()) != null) {
 			newData1.add(processed);
@@ -100,6 +98,8 @@ public class Preprocessing {
 		return newData1;
 	}
 
+	/*Function normalizes numeric attributes in the given Instances.
+	 *Returns the normalized Instances */
 	public Instances NormalizedData(Instances data) throws Exception {
 		Normalize objNormalize = new Normalize();
 		objNormalize.setInputFormat(data);
@@ -115,14 +115,7 @@ public class Preprocessing {
 		return newData1;
 	}
 
-	public Instances cleanTest(Instances test) throws Exception {
-		Instances tempReplaceMissingValuesTest = replaceMissingValues(test);
-		// Instances normalizedTestData =
-		// NormalizedData(tempReplaceMissingValuesTest);
-		// return normalizedTestData;
-		return tempReplaceMissingValuesTest;
-	}
-
+	/*Function removes missing value instances from given Instances*/
 	public Instances removeMissingInstances(Instances data) {
 		/*boolean	hasMissingValue()
 		Tests whether an instance has a missing value.*/
