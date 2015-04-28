@@ -73,7 +73,7 @@ public class MajorityVote {
 		
 		/*Classifiers to combine in Majority Voting*/
 		Classifier[] objClassifiers = { objNBTree, objJ48, objLogistic, objRandomForest, objBagging };
-
+		
 		objVote.setClassifiers(objClassifiers);	
 		
 		System.out.println("=== Number of Training Instances ===");
