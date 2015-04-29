@@ -4,6 +4,9 @@ run the Majority Voting algorithm using preprocessing.
  */
 package CensusProject;
 
+import java.io.BufferedReader;
+import java.util.Scanner;
+
 import preprocessing.*;
 import Ensemble.*;
 import weka.core.Instances;
@@ -34,8 +37,17 @@ public class CensusProject {
 
 		Instances train = objPreprocess.readArffFile(dataArfffile);
 		Instances test = objPreprocess.readArffFile(testArfffile);
-
-		String selection = "replaceMissingValuesRunMAJ"; /*The one we are using*/
+		
+		System.out.println("Run Options:");
+		System.out.println("1) Enter 1 to run Majority Voting with Replacing Missing Values(Mean & Mode Imputation)");
+		System.out.println("2) Enter 2 to run Majority Voting with Replacing Missing Values(Mean & Mode Imputation) then SMOTE");
+		System.out.println("3) Enter 3 to run Majority Voting with Replacing Missing Values(Mean & Mode Imputation) then SMOTE then Normalisation");
+		System.out.println("4) Enter 4 to run Majority Voting with Removing Missing Values");
+		System.out.println("5) Enter 5 to run Majority Voting without any Preprocessing");
+		System.out.println("Enter your choice: ");
+		
+		Scanner in = new Scanner(System.in);
+		int choice = in.nextInt();
 
 		if (train != null && test != null) {
 
@@ -45,14 +57,14 @@ public class CensusProject {
 			 */
 			MajorityVote mV = new MajorityVote();
 			
-			if (selection.equals("replaceMissingValuesRunMAJ")) {
+			if (choice==1)/*This is our algorithm*/ {
 				System.out.println("=== Starting to Run Majority Voting with Replacing Missing Values(Mean & Mode Imputation) ===");
 				/* Replace Missing Values in Data */
 				Instances trainReplaceMissingValues = objPreprocess.replaceMissingValues(train);
 				/* Replace Missing Values in Test */
 				Instances testFilledMissingValues = objPreprocess.replaceMissingValues(test);
 				mV.MajorityVotePrediction(trainReplaceMissingValues, testFilledMissingValues);
-			} else if (selection.equals("replaceMissingValuesSMOTERunMAJ")) {
+			} else if (choice==2) {
 				System.out.println("=== Starting to Run Majority Voting with Replacing Missing Values(Mean & Mode Imputation) then SMOTE ===");
 				/* Replace Missing Values in Data */
 				Instances trainReplaceMissingValues = objPreprocess.replaceMissingValues(train);
@@ -64,7 +76,7 @@ public class CensusProject {
 				Instances testFilledMissingValues = objPreprocess.replaceMissingValues(test);
 				/* Running Majority Voting */
 				mV.MajorityVotePrediction(trainBalancedRandomizedData, testFilledMissingValues);
-			} else if (selection.equals("replaceMissingValuesSMOTENormaliseRunMAJ")) {
+			} else if (choice==3) {
 				System.out.println("=== Starting to Run Majority Voting with Replacing Missing Values(Mean & Mode Imputation) then SMOTE then Normalisation ===");
 				/* Replace Missing Values in Train */
 				Instances trainReplaceMissingValues = objPreprocess.replaceMissingValues(train);
@@ -80,7 +92,7 @@ public class CensusProject {
 				Instances normalizedTestData = objPreprocess.NormalizedData(testFilledMissingValues);
 				/* Running Majority Voting */
 				mV.MajorityVotePrediction(normalizedTrainData, normalizedTestData);
-			} else if (selection.equals("removeMissingValuesRunMAJ")) {
+			} else if (choice==4) {
 				System.out.println("=== Starting to Run Majority Voting with Removing Missing Values ===");
 				/* Removing Missing Values From Train */
 				Instances trainRemoveMissingValues = objPreprocess.removeMissingInstances(train);
@@ -88,10 +100,14 @@ public class CensusProject {
 				Instances testRemoveMissingValues = objPreprocess.removeMissingInstances(test);
 				/* Running Majority Voting */
 				mV.MajorityVotePrediction(trainRemoveMissingValues, testRemoveMissingValues);
-			} else {
+			} else if(choice==5){
 				System.out.println("=== Starting to Run Majority Voting without any Preprocessing ===");
 				mV.MajorityVotePrediction(train, test);
 			}
+			else{
+				System.out.println("Invalid Choice, run the project again");
+				System.exit(0);
+				}
 		}
 	}
 }

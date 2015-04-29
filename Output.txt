@@ -1,0 +1,232 @@
+OUTPUT:
+1) Output of running Majority Voting with Replacing Missing Values(Mean & Mode Imputation)(Our algorithm)
+
+Output : 
+census-income-data.arff and census-income-test.arff are created from census-income.data
+census-income.test and  our project will read data from arff files.
+
+The output of the prediction accuracy is seen on the console as follows:
+
+=== Starting to Run Majority Voting with Replacing Missing Values(Mean & Mode Imputation) ===
+=== Number of Training Instances ===
+32561
+
+=== Classifier model (full training set) ===
+
+Vote combines the probability distributions of these base learners:
+	weka.classifiers.trees.NBTree 
+	weka.classifiers.trees.J48 -C 0.1 -M 2
+	weka.classifiers.functions.Logistic -R 1.0E-8 -M -1
+	weka.classifiers.trees.RandomForest -I 100 -K 0 -S 1
+	weka.classifiers.meta.Bagging -P 25 -S 1 -I 10 -W weka.classifiers.trees.J48 -- -C 0.25 -M 2
+using the 'Majority Voting' combination rule 
+
+=== Building Model ===
+=== Time taken to Build Classifiers & Test ===
+
+85 seconds
+
+Results
+===============
+
+Correctly Classified Instances       14075               86.4505 %
+Incorrectly Classified Instances      2206               13.5495 %
+Kappa statistic                          0.5981
+K&B Relative Info Score             937067.8836 %
+K&B Information Score                 7391.245  bits      0.454  bits/instance
+Class complexity | order 0           12840.958  bits      0.7887 bits/instance
+Class complexity | scheme          2369244      bits    145.522  bits/instance
+Complexity improvement     (Sf)    -2356403.042 bits   -144.7333 bits/instance
+Mean absolute error                      0.1355
+Root mean squared error                  0.3681
+Relative absolute error                 37.5475 %
+Root relative squared error             86.6594 %
+Total Number of Instances            16281     
+
+For <50K F-Measure :0.9138348566518241 Precision :0.8884332042226779 Recall :0.9407318053880177
+For >50K F-Measure :0.6830459770114943 Precision :0.7633269107257546 Recall :0.6180447217888716
+=== Confusion Matrix ===
+a	b
+11698	737	 |a =  <=50K
+1469	2377	 |b =  >50K
+
+2) Output of running Majority Voting with Replacing Missing Values(Mean & Mode Imputation) then SMOTE
+
+=== Starting to Run Majority Voting with Replacing Missing Values(Mean & Mode Imputation) then SMOTE ===
+=== Number of Training Instances ===
+37657
+
+=== Classifier model (full training set) ===
+
+Vote combines the probability distributions of these base learners:
+	weka.classifiers.trees.NBTree 
+	weka.classifiers.trees.J48 -C 0.1 -M 2
+	weka.classifiers.functions.Logistic -R 1.0E-8 -M -1
+	weka.classifiers.trees.RandomForest -I 100 -K 0 -S 1
+	weka.classifiers.meta.Bagging -P 25 -S 1 -I 10 -W weka.classifiers.trees.J48 -- -C 0.25 -M 2
+using the 'Majority Voting' combination rule 
+
+=== Building Model ===
+=== Time taken to Build Classifiers & Test ===
+
+77 seconds
+
+Results
+===============
+
+Correctly Classified Instances       13985               85.8977 %
+Incorrectly Classified Instances      2296               14.1023 %
+Kappa statistic                          0.594 
+K&B Relative Info Score             908879.8951 %
+K&B Information Score                 7168.9086 bits      0.4403 bits/instance
+Class complexity | order 0           12840.958  bits      0.7887 bits/instance
+Class complexity | scheme          2465904      bits    151.459  bits/instance
+Complexity improvement     (Sf)    -2453063.042 bits   -150.6703 bits/instance
+Mean absolute error                      0.141 
+Root mean squared error                  0.3755
+Relative absolute error                 39.0793 %
+Root relative squared error             88.4095 %
+Total Number of Instances            16281     
+
+For <50K F-Measure :0.9091987661156371 Precision :0.8944829196171504 Recall :0.9244069159630076
+For >50K F-Measure :0.6844420010995051 Precision :0.7259475218658892 Recall :0.6474258970358814
+=== Confusion Matrix ===
+a	b
+11495	940	 |a =  <=50K
+1356	2490	 |b =  >50K
+
+3) Output for running Majority Voting with Replacing Missing Values(Mean & Mode Imputation) then SMOTE then Normalisation
+
+=== Starting to Run Majority Voting with Replacing Missing Values(Mean & Mode Imputation) then SMOTE then Normalisation ===
+=== Number of Training Instances ===
+37657
+
+=== Classifier model (full training set) ===
+
+Vote combines the probability distributions of these base learners:
+	weka.classifiers.trees.NBTree 
+	weka.classifiers.trees.J48 -C 0.1 -M 2
+	weka.classifiers.functions.Logistic -R 1.0E-8 -M -1
+	weka.classifiers.trees.RandomForest -I 100 -K 0 -S 1
+	weka.classifiers.meta.Bagging -P 25 -S 1 -I 10 -W weka.classifiers.trees.J48 -- -C 0.25 -M 2
+using the 'Majority Voting' combination rule 
+
+=== Building Model ===
+=== Time taken to Build Classifiers & Test ===
+
+72 seconds
+
+Results
+===============
+
+Correctly Classified Instances       13909               85.4309 %
+Incorrectly Classified Instances      2372               14.5691 %
+Kappa statistic                          0.5803
+K&B Relative Info Score             885076.7049 %
+K&B Information Score                 6981.1578 bits      0.4288 bits/instance
+Class complexity | order 0           12840.958  bits      0.7887 bits/instance
+Class complexity | scheme          2547528      bits    156.4725 bits/instance
+Complexity improvement     (Sf)    -2534687.042 bits   -155.6837 bits/instance
+Mean absolute error                      0.1457
+Root mean squared error                  0.3817
+Relative absolute error                 40.3729 %
+Root relative squared error             89.8608 %
+Total Number of Instances            16281     
+
+For <50K F-Measure :0.9062228196410216 Precision :0.8912823703242865 Recall :0.9216726980297547
+For >50K F-Measure :0.6736378646119977 Precision :0.7153711279953243 Recall :0.6365054602184087
+=== Confusion Matrix ===
+a	b
+11461	974	 |a =  <=50K
+1398	2448	 |b =  >50K
+
+4) Output for running Majority Voting with Removing Missing Values
+
+=== Starting to Run Majority Voting with Removing Missing Values ===
+=== Number of Training Instances ===
+30162
+
+=== Classifier model (full training set) ===
+
+Vote combines the probability distributions of these base learners:
+	weka.classifiers.trees.NBTree 
+	weka.classifiers.trees.J48 -C 0.1 -M 2
+	weka.classifiers.functions.Logistic -R 1.0E-8 -M -1
+	weka.classifiers.trees.RandomForest -I 100 -K 0 -S 1
+	weka.classifiers.meta.Bagging -P 25 -S 1 -I 10 -W weka.classifiers.trees.J48 -- -C 0.25 -M 2
+using the 'Majority Voting' combination rule 
+
+=== Building Model ===
+=== Time taken to Build Classifiers & Test ===
+
+39 seconds
+
+Results
+===============
+
+Correctly Classified Instances       12922               85.8035 %
+Incorrectly Classified Instances      2138               14.1965 %
+Kappa statistic                          0.5922
+K&B Relative Info Score             859583.4598 %
+K&B Information Score                 6914.6614 bits      0.4591 bits/instance
+Class complexity | order 0           12113.7426 bits      0.8044 bits/instance
+Class complexity | scheme          2296212      bits    152.4709 bits/instance
+Complexity improvement     (Sf)    -2284098.2574 bits   -151.6666 bits/instance
+Mean absolute error                      0.142 
+Root mean squared error                  0.3768
+Relative absolute error                 38.3003 %
+Root relative squared error             87.5238 %
+Total Number of Instances            15060     
+
+For <50K F-Measure :0.9085777815787224 Precision :0.8834192582737402 Recall :0.9352112676056338
+For >50K F-Measure :0.6825066825066826 Precision :0.7574159525379037 Recall :0.6210810810810811
+=== Confusion Matrix ===
+a	b
+10624	736	 |a =  <=50K
+1402	2298	 |b =  >50K
+
+5) Output for running Majority Voting without any Preprocessing
+
+=== Starting to Run Majority Voting without any Preprocessing ===
+=== Number of Training Instances ===
+32561
+
+=== Classifier model (full training set) ===
+
+Vote combines the probability distributions of these base learners:
+	weka.classifiers.trees.NBTree 
+	weka.classifiers.trees.J48 -C 0.1 -M 2
+	weka.classifiers.functions.Logistic -R 1.0E-8 -M -1
+	weka.classifiers.trees.RandomForest -I 100 -K 0 -S 1
+	weka.classifiers.meta.Bagging -P 25 -S 1 -I 10 -W weka.classifiers.trees.J48 -- -C 0.25 -M 2
+using the 'Majority Voting' combination rule 
+
+=== Building Model ===
+=== Time taken to Build Classifiers & Test ===
+
+50 seconds
+
+Results
+===============
+
+Correctly Classified Instances       14070               86.4198 %
+Incorrectly Classified Instances      2211               13.5802 %
+Kappa statistic                          0.5947
+K&B Relative Info Score             935501.8842 %
+K&B Information Score                 7378.893  bits      0.4532 bits/instance
+Class complexity | order 0           12840.958  bits      0.7887 bits/instance
+Class complexity | scheme          2374614      bits    145.8519 bits/instance
+Complexity improvement     (Sf)    -2361773.042 bits   -145.0631 bits/instance
+Mean absolute error                      0.1358
+Root mean squared error                  0.3685
+Relative absolute error                 37.6326 %
+Root relative squared error             86.7576 %
+Total Number of Instances            16281     
+
+For <50K F-Measure :0.9138515488018703 Precision :0.8863945578231293 Recall :0.9430639324487334
+For >50K F-Measure :0.6794258373205743 Precision :0.767944936086529 Recall :0.609204368174727
+=== Confusion Matrix ===
+a	b
+11727	708	 |a =  <=50K
+1503	2343	 |b =  >50K
+
